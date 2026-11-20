@@ -1,0 +1,13 @@
+[Unit]
+Description=HVAC control web UI (Ayla LAN client)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=cameron
+ExecStart=/home/cameron/hvac-control/hvac-server --listen 0.0.0.0:48217
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

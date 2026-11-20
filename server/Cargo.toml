@@ -1,0 +1,8 @@
+[package]
+name = "hvac-server"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+hvac-core = { path = "../core" }
+tokio = { version = "1", features = ["full"] }

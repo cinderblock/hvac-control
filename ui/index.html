@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HVAC Control</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <div>
+      <h1 id="name">HVAC</h1>
+      <div class="sub"><span id="dot" class="dot"></span><span id="status">Connecting…</span></div>
+    </div>
+    <button id="power" class="power" title="Power" aria-pressed="false">⏻</button>
+  </header>
+
+  <section class="dial">
+    <div class="room">Room <span id="room">--</span></div>
+    <div class="setpoint">
+      <button id="down" class="step" aria-label="Lower">−</button>
+      <div id="dial" class="temp">
+        <span id="t-from" class="slot"><span>--</span></span>
+        <span class="arrow">→</span>
+        <span id="t-to" class="slot"></span>
+        <span id="unit" class="unit"></span>
+      </div>
+      <button id="up" class="step" aria-label="Raise">+</button>
+    </div>
+  </section>
+
+  <section>
+    <h2>Schedule <button id="sched-edit" class="link">edit</button></h2>
+    <div class="sched">
+      <div id="sched-title">…</div>
+      <div id="sched-countdown" class="countdown" hidden></div>
+      <div id="sched-why" class="hint"></div>
+      <div id="sched-weather" class="hint"></div>
+      <button id="sched-resume" hidden>Resume schedule</button>
+    </div>
+  </section>
+
+  <section>
+    <h2>Mode</h2>
+    <div class="seg" id="mode">
+      <button data-v="2">❄ Cool</button>
+      <button data-v="1">☀ Heat</button>
+      <button data-v="3">💧 Dry</button>
+      <button data-v="0">✇ Fan</button>
+      <button data-v="4">A Auto</button>
+    </div>
+  </section>
+
+  <section>
+    <h2>Fan</h2>
+    <div class="seg" id="fan">
+      <button data-v="0">Auto</button>
+      <button data-v="6">Low</button>
+      <button data-v="7">Med</button>
+      <button data-v="8">High</button>
+    </div>
+  </section>
+
+  <section>
+    <h2>Options</h2>
+    <div class="toggles">
+      <button data-k="swingV">Swing ↕</button>
+      <button data-k="swingH">Swing ↔</button>
+      <button data-k="eco">Eco</button>
+      <button data-k="quiet">Quiet</button>
+      <button data-k="turbo">Turbo</button>
+    </div>
+  </section>
+
+  <div id="error" class="error" hidden></div>
+
+  <details>
+    <summary>Raw properties <button id="refresh" class="link">refresh</button></summary>
+    <pre id="raw"></pre>
+  </details>
+
+  <div id="editor" class="editor" hidden>
+    <div class="editor-body">
+      <h1>Schedule</h1>
+      <div id="ed-error" class="error" hidden></div>
+
+      <section>
+        <label class="check"><input id="ed-enabled" type="checkbox">Scheduler controls the unit</label>
+      </section>
+
+      <section>
+        <h2>Location</h2>
+        <div id="ed-place" class="hint"></div>
+        <div class="search">
+          <input id="ed-query" type="search" placeholder="City, or lat, lon" autocomplete="off">
+          <button id="ed-search" type="button">Find</button>
+          <button id="ed-clear" type="button" hidden>Clear</button>
+        </div>
+        <div id="ed-places" class="places"></div>
+      </section>
+
+      <section>
+        <h2>Setpoint limits (°F)</h2>
+        <div class="fields">
+          <label><span>Lowest</span><input id="ed-min" type="number" inputmode="numeric" min="64" max="127"></label>
+          <label><span>Highest</span><input id="ed-max" type="number" inputmode="numeric" min="64" max="127"></label>
+        </div>
+      </section>
+
+      <section>
+        <h2>After a manual change, hold</h2>
+        <div class="fields">
+          <label class="wide">
+            <span>Until</span>
+            <select id="ed-hold">
+              <option value="boundary">The next rule change, at most…</option>
+              <option value="boundaryOpen">The next rule change</option>
+              <option value="fixed">A fixed time</option>
+              <option value="resume">I press Resume</option>
+            </select>
+          </label>
+          <label id="ed-hold-field"><span>Hours</span><input id="ed-hold-hours" type="number" inputmode="decimal" min="0.5" step="0.5"></label>
+        </div>
+      </section>
+
+      <section>
+        <h2>Beeps</h2>
+        <div class="fields">
+          <label class="wide">
+            <span>Mute the unit's beep during</span>
+            <select id="ed-quiet">
+              <option value="all">All scheduled changes</option>
+              <option value="ramps">Ramp steps only</option>
+              <option value="off">Nothing</option>
+            </select>
+          </label>
+        </div>
+      </section>
+
+      <section>
+        <h2>Rules (first match wins)</h2>
+        <div id="ed-rules"></div>
+        <button id="ed-add" class="full" type="button">Add rule</button>
+      </section>
+
+      <div class="actions sticky">
+        <button id="ed-cancel" type="button">Cancel</button>
+        <button id="ed-save" class="active" type="button">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script src="schedule.js"></script>
+</body>
+</html>
